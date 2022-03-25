@@ -16,3 +16,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/home',function(){
+    return view('home');
+
+});
+
+Route::get('/test/{name}/{mobile?}',function($name,$mobile=null){
+    echo "Your Name is :-".$name;
+    echo "</br>Your Mobile No is :-".$mobile;
+})->where(['name' => '[A-Za-z]+' , 'mobile' => '[0-9]+']);
