@@ -24,7 +24,7 @@ use App\Http\Controllers\ComponentTypeMasterController;
 use App\Http\Controllers\ComponentNameMasterController;
 use App\Http\Controllers\TDSHeadMasterController;
 use App\Http\Controllers\SalaryComponentAllocationController;
-
+use App\Http\Controllers\EmployeeSalaryStructureController;
 /*
 
 |--------------------------------------------------------------------------
@@ -204,3 +204,12 @@ Route::post('/salarycomponentallocationload',[SalaryComponentAllocationControlle
 Route::post('/salarycomponentallocationupdate',[SalaryComponentAllocationController::class,'update'])->name('salarycomponentallocationupdate');
 Route::post('/salarycomponentallocationdelete',[SalaryComponentAllocationController::class,'delete'])->name('salarycomponentallocationdelete');
 
+//Route of employeesalarystructure
+Route::get('/employeesalarystructure',[EmployeeSalaryStructureController::class,'index'])->name('employeesalarystructure');
+Route::get('/employeesalarystructuredisplay',[EmployeeSalaryStructureController::class,'displayRecords'])->name('employeesalarystructuredisplay');
+Route::get('/getsalarycomponent',[EmployeeSalaryStructureController::class,'getSalaryComponent'])->name('getsalarycomponent');
+Route::post('/employeesalarystructurestore',[EmployeeSalaryStructureController::class,'store'])->name('employeesalarystructurestore');
+Route::post('/employeesalarystructureedit',[EmployeeSalaryStructureController::class,'edit'])->name('employeesalarystructureedit');
+Route::post('/employeesalarystructureload',[EmployeeSalaryStructureController::class,'load'])->name('employeesalarystructureload');
+Route::post('/employeesalarystructureupdate',[EmployeeSalaryStructureController::class,'update'])->name('employeesalarystructureupdate');
+Route::post('/employeesalarystructuredelete',[EmployeeSalaryStructureController::class,'delete'])->name('employeesalarystructuredelete');

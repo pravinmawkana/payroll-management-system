@@ -15,4 +15,7 @@ class DepartmentMaster extends Model
         'companyId',
         'status'
     ];
+    public function department(){
+        return $this->belongsTo(TblemployeedetailsModel::class)
+    }
 }

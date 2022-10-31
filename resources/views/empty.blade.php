@@ -3,6 +3,9 @@
     <title>Title</title>
 
 @endpush
+@section('page-name')
+    Component Name Master
+@endsection
 @section('main-content')
 
 @endsection

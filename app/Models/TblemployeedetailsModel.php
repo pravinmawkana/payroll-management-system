@@ -10,4 +10,8 @@ class TblemployeedetailsModel extends Model
     use HasFactory;
     protected $table = "employeemaster";
     protected $primaryKey = "empId";
+    public function departmentmaster()
+    {
+        return $this->hasMany(DepartmentMaster::class,'deptId');
+    }
 }
