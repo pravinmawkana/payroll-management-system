@@ -9,9 +9,13 @@ class LoginController extends Controller
 {
     public function index(Request $request ){
         //session()->flush();
-        $request->session()->forget('userName');
+        //$request->session()->forget('userName');
         return view('login');
 
+    }
+    public function logout(Request $request){
+        $request->session()->forget('userName');
+        return view('login');
     }
     public function login(Request $request){
         $validator =  Validator::make($request->all(),[

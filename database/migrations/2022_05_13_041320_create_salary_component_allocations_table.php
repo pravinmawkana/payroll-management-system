@@ -16,6 +16,7 @@ class CreateSalaryComponentAllocationsTable extends Migration
         Schema::create('salary_component_allocations', function (Blueprint $table) {
             $table->id('comptId');
             $table->string('calcCode',50);
+            $table->string('calcType',50);
             $table->string('comptName',50);
             $table->string('comptDesc',50);
             $table->unsignedBigInteger('cTypeId');

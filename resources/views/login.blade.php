@@ -1,10 +1,18 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
   <title>Login </title>
  @include('layout.head')
 </head>
 <body>
+    {{-- {{ session('userName') ??  'Guest' }}
+    @if (  Session::has('userName') )
+        <script>   window.location = "/dashboard";  </script>
+
+    @else
+        <script> alert('no user'); </script>
+
+    @endif --}}
 
      <div class="login-wrap customscroll d-flex align-items-center flex-wrap justify-content-center pd-20">
     <div class="login-box bg-white box-shadow pd-30 border-radius-5">
@@ -12,7 +20,7 @@
       <h2 class="text-center mb-30">Equity Hyundai Login</h2>
       <form>
         @csrf
-        <div class="input-group custom input-group-lg">         
+        <div class="input-group custom input-group-lg">
           <input type="text" id="userName" class="form-control" placeholder="Username">
           <div class="input-group-append custom">
             <span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span>
@@ -30,7 +38,7 @@
           <div class="input-group-append custom">
             <span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
           </div>
-          
+
         </div>
         <div class="form-check">
             <input type="checkbox" class="js-switch" id="rememberMe">
@@ -45,7 +53,7 @@
               -->
               <button id="logIn" type="button" class="btn btn-outline-primary btn-lg btn-block"><i class="fa fa-lock"></i>
                 Log In</button>
-              
+
             </div>
           </div>
           <div class="col-sm-6">
@@ -69,15 +77,17 @@
         });
       </script>
       <script type="text/javascript">
-      
+        $(document).ready(function(){
+
+        });
         $('#logIn').on('click', function(){
           var token = $('input[name="_token"').val();
           var userName = $('#userName').val();
               var userPassword = $('#userPassword').val();
               var userPassword1 = $('#userPassword1').val();
-              
+
                 //$('#logIn').html("Done");
-                
+
                 if(userName=='' || userPassword=='')
                 {
                   alert("userName and Password are required");
@@ -94,37 +104,37 @@
                         userName : userName,
                         userPassword: userPassword,
                         userPassword1: userPassword1
-                        
+
                       },
                       success: function(response){
                         //alert(response);
                         $('#message').html(response);
                         if(response.status==400)
                         {
-                          
+
                           $('#message').html('Both Password should be save');
                           return;
                         }
-                        
+
                         if($.trim(response) !="Incorrect username/password"){
-                         
+
                           window.location.replace("dashboard");
                           if(response=="changepassword"){
                             alert("Your Password Is Expired Please change password!");
                            // window.location.replace("changePassword.php");
                           }
-                        
+
                         }
-                        
-                        
+
+
                       },
                       datatype: 'json'
 
                     });
                 }
-               
+
             });
-        
+
       </script>
 </body>
 </html>

@@ -43,7 +43,9 @@ Route:: post('/mainmenu',[DisplaySidebarController::class,'index']);
 //Route:: get('/mainmenu',[DisplaySidebarController::class,'index']);
 
 
+Route:: get('/',[LoginController::class,'index']);
 Route:: get('/login',[LoginController::class,'index']);
+Route:: get('/logout',[LoginController::class,'logout']);
 Route:: post('/login',[LoginController::class,'login'])->name('login');
 
 Route::get('/home/{name}/{id?}',function($name,$id=null){

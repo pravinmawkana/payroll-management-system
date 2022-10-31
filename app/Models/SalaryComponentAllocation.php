@@ -12,9 +12,10 @@ class SalaryComponentAllocation extends Model
     protected $primaryKey = "comptId";
     protected $fillable=[
         'calcCode',
+        'calcType',
         'comptName',
         'comptDesc',
-        'comptType',
+        'cTypeId',
         'comptFormula',
         'calcAttendance',
         'consdWeekOff',

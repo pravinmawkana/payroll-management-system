@@ -61,6 +61,7 @@ class ComponentNameMasterController extends Controller
                             <tr>
                                 <th>Component Id</th>
                                 <th>Component Name</th>
+                                <th>Component Type</th>
                                 <th>Edit</th>
                                 <th>View</th>
                                 <th>Delete</th>
@@ -71,7 +72,8 @@ class ComponentNameMasterController extends Controller
                                 $response.= '
                                             <tr>
                                             <td>'.$row['cNameId'].'</td>
-                                            <td>'.$row['cName'].'</td>'.
+                                            <td>'.$row['cName'].'</td>
+                                            <td>'.$row['cTypeId'].'</td>'.
                                             '<td><input type="button" value="edit" onclick='."editData('1','Edit',".$row['cNameId'].")" .' class="btn btn-warning"></td>
                                             <td><input type="button" value="View" onclick='."editData('0','Edit',".$row['cNameId'].")" .' class="btn"></td>
                                             <td><input type="button" value="Delete" onclick='."deleteData('1','Delete',".$row['cNameId'].")" .' class="btn btn-danger"> </td>
