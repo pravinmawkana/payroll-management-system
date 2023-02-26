@@ -30,7 +30,7 @@ class DesignationMasterController extends Controller
         if($validator->fails()){
             return response()->json([
                 'status'=>400,
-                'errors'=> $validator->messages(),
+                'errors'=> $validator->getMessageBag(),
             ]);
         }
         //print_r($designationmaster);
@@ -91,7 +91,7 @@ class DesignationMasterController extends Controller
         if($validator->fails()){
             return response()->json([
                 'status'=>400,
-                'errors'=> $validator->messages(),
+                'errors'=> $validator->getMessageBag(),
             ]);
         }
 

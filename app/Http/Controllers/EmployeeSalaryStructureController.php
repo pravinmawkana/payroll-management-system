@@ -33,7 +33,7 @@ class EmployeeSalaryStructureController extends Controller
                                             <td>'.$empName.'</td>'.
                                             '<td>'.$row['branchId'].'</td>'.
                                             '<td><input type="button" value="Edit" onclick='."editData('1','EditStructure',".$row['empId'].",'".$row['empCode']."','".$row['empFirstName'].$row['empLastName']."')" .' class="btn btn-warning"></td>
-                                            <td><input type="button" value="View Employee" onclick='."editData('0','ViewEmploye',".$row['empId'].")" .' class="btn"></td>
+                                            <td><input type="button" value="View Employee" onclick='."editData('0','ViewEmploye',".$row['empId'].",'".$row['empCode']."','".$row['empFirstName'].$row['empLastName']."')" .' class="btn"></td>
                                             </tr>';
                         }
         }else{
