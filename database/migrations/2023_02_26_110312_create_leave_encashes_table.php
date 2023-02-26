@@ -27,7 +27,7 @@ class CreateLeaveEncashesTable extends Migration
             $table->double('days',7,2);
             $table->integer('last_drwn_month');
             $table->double('amount',18,0);
-            $table->double('days',18,0);
+            $table->double('last_drwn_salary',18,0);
             $table->boolean('make_supplementary');
             $table->boolean('full_n_final');
             $table->boolean('status')->default(1);

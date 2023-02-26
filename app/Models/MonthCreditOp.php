@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class MonthCreditOp extends Model
 {
     use HasFactory;
+    protected $table = "month_credit_ops";
+    protected $primaryKey = "id";
+    protected $fillable=[
+        'leaveOpeningId', 'empId', 'companyId', 'leave_setting_header', 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec', 'status'
+    ];
 }
