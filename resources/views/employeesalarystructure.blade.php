@@ -312,12 +312,6 @@ $(document).ready(function(){
         $('#NetSalary').val(NetSalary);
 
 
-
-
-
-
-
-
     }
 function displayRecords(){
         $.ajax({

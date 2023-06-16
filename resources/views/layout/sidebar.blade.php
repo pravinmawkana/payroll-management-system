@@ -18,14 +18,14 @@
 					{{-- @else
 						{{ "Guest" }}
 				@endif --}}
-				
+
  		@php
-			
+
     echo App\Http\Controllers\DisplaySidebarController::index();
    @endphp
-	
 
-        
+
+
 
 					<div>
 				</ul>
