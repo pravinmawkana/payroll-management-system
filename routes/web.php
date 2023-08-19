@@ -25,7 +25,9 @@ use App\Http\Controllers\ComponentNameMasterController;
 use App\Http\Controllers\TDSHeadMasterController;
 use App\Http\Controllers\SalaryComponentAllocationController;
 use App\Http\Controllers\EmployeeSalaryStructureController;
+use App\Http\Controllers\EmployeeUploadController;
 use App\Http\Controllers\ProcessMonthlySalaryController;
+use App\Http\Controllers\MonthMasterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +39,7 @@ use App\Http\Controllers\ProcessMonthlySalaryController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
@@ -58,7 +61,6 @@ Route::get('/home/{name}/{id?}', function ($name, $id = null) {
     $msg = "<h2>This is HTML H2</h2>";
     $data = compact('name', 'id', 'msg');
     return view('home')->with($data);
-
 });
 
 Route::get('/test/{name}/{mobile?}', function ($name, $mobile = null) {
@@ -224,3 +226,16 @@ Route::post('/employeesalarystructuredelete', [EmployeeSalaryStructureController
 
 //Route of Process Monthly Salary
 Route::get('/ProcessMonthlySalary', [ProcessMonthlySalaryController::class, 'ProcessMonthlySalary'])->name('ProcessMonthlySalary');
+
+
+//Route of Add/Select Month
+Route::get('/monthmaster', [MonthMasterController::class, 'index'])->name('monthmaster');
+Route::get('/monthmasterdisplay', [MonthMasterController::class, 'displayRecords'])->name('monthmasterdisplay');
+Route::post('/monthmasterstore', [MonthMasterController::class, 'store'])->name('monthmasterstore');
+Route::post('/monthmasteredit', [MonthMasterController::class, 'edit'])->name('monthmasteredit');
+Route::post('/monthmasterupdate', [MonthMasterController::class, 'update'])->name('monthmasterupdate');
+Route::post('/monthmasterdelete', [MonthMasterController::class, 'delete'])->name('monthmasterdelete');
+
+Route::get('employeeupload', [EmployeeUploadController::class, 'index'])->name('employeeupload');
+Route::post('importemployee', [EmployeeUploadController::class, 'importEmployee'])->name('importemployee');
+Route::post('import-process', [EmployeeUploadController::class, 'importProcess'])->name('import-process');

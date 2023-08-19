@@ -9,7 +9,11 @@ use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Events\SalaryCalculationProgressEvent;
+use App\Models\EmployeeSalaryStructure;
+use App\Models\LeaveAttendance;
+use App\Models\LeaveAttendanceClosing;
 use Illuminate\Support\Facades\Event;
+use Dompdf\Dompdf;
 
 class ProcessMonthlySalaryController extends Controller
 {
@@ -181,14 +185,14 @@ class ProcessMonthlySalaryController extends Controller
 
 
         //EPSEmployer=([Pension Wage])*8.33/100
-        $epfEmployer = round(($pensionWage * 8.33) / 100);
+        $epsEmployer = round(($pensionWage * 8.33) / 100);
 
         //EPFEmployer = A=[PF Wages]*12/100  Final=A - [EPS Employer]
         $epfEmployerA = ($pfWages * 12) / 100;
-        $epfEmployer = round($epfEmployerA - $epfEmployer);
+        $epfEmployer = round($epfEmployerA - $epsEmployer);
 
-        //PFAdminCharge=[PF Wages]*0.65/100
-        $pfAdminCharge = round(($pfWages * 0.65) / 100);
+        //PFAdminCharge=[PF Wages]*0.85/100
+        $pfAdminCharge = round(($pfWages * 0.85) / 100);
 
         //EDLIWage=[PF Wages]  if [PF Wages]>15000 then  Final=15000  End if
         $edliWage = $pfWages;
@@ -196,8 +200,8 @@ class ProcessMonthlySalaryController extends Controller
             $edliWage = 15000;
         }
 
-        //EDLIAdmin=[EDLI Wage]*0/100
-        $edliAdmin = 0;
+        //EDLIAdmin=[EDLI Wage]*0/100 need to check 
+        $edliAdmin = ($edliWage * 0.1) / 100;
 
         //EDLIEmployer=[EDLI Wage]*0.5/100
         $edliEmployer = round(($edliWage * 0.5) / 100);
@@ -213,7 +217,7 @@ class ProcessMonthlySalaryController extends Controller
 
 
         //ESICEmployer=([ESIC Wage]*3.25/100)+0.49
-        $esicEmployer = (($esicWage * 3.25) / 100) + 0.49;
+        $esicEmployer = round((($esicWage * 3.25) / 100) + 0.49);
 
         $pfControl = 0;
 
@@ -229,6 +233,11 @@ class ProcessMonthlySalaryController extends Controller
         $mobileDeduction = 0;
         $salaryAdvance = 0;
         $latePresent = 0;
+        //A=[Gross_Salary_Structure]/[days]  Final=(A/6)*[late_marks]
+        $days = 30;
+        $late_marks = 7;
+        $latePresentA = $masterGross / $days;
+        $latePresent = round(($latePresentA / 6) * $late_marks);
         $securityDeposite = 0;
 
         $grossSalary = $basicSalary + $houseRentAllowance + $conveyanceAllowance + $specialAllowance + $otherAllowance +
@@ -256,8 +265,22 @@ class ProcessMonthlySalaryController extends Controller
         $data .= "Bonus: " . $bonus . "<br>";
         $data .= "Other Salary: " . $otherSalary . "<br>";
         $data .= "Arrears Salary: " . $arrearsSalary . "<br>";
-        $data .= "Provident Fund: " . $providentFund . "<br>";
-        $data .= "ESIC: " . $esic . "<br>";
+        $data .= "D Provident Fund: " . $providentFund . "<br>";
+        $data .= "O fp wage: " . $pfWages . "<br>";
+        $data .= "O pension wage: " . $pensionWage . "<br>";
+        $data .= "D ESIC: " . $esic . "<br>";
+        $data .= "O EPF: " . $epfEmployer . "<br>";
+        $data .= "O PF Admin Charge: " . $pfAdminCharge . "<br>";
+        $data .= "O edli Admin Charge: " . $edliAdmin . "<br>";
+        $data .= "O edli Wage: " . $edliWage . "<br>";
+        $data .= "O edli Employer: " . $edliEmployer . "<br>";
+        $data .= "O ESIC Wage: " . $esicWage . "<br>";
+        $data .= "O ESIC Employer: " . $esicEmployer . "<br>";
+        $data .= "O Master Gross: " . $masterGross . "<br>";
+
+
+        $data .= "O EPS: " . $epsEmployer . "<br>";
+
         $data .= "TDS: " . $tds . "<br>";
         $data .= "Other Deduction: " . $otherDeduction . "<br>";
         $data .= "Loan: " . $loan . "<br>";
@@ -266,6 +289,32 @@ class ProcessMonthlySalaryController extends Controller
         $data .= "Late Present: " . $latePresent . "<br>";
         $data .= "Security Deposite: " . $securityDeposite . "<br>";
         $data .= "Professional Tax Deduction: " . $professionalTaxDeduction . "<br>";
+
+        echo "<br/><pre>" . $this->getSalaryStructure(1) . "</pre>";
+        echo "<br/>" . $this->getLeaveAttendaceClosing(1, 1);
+        echo "<br/>" . $this->getLeaveAttendance(1, 1);
+
+        exit;
+        $data = [
+            'employeeName' => 'John Doe',
+            'employeeId' => '123',
+            'basicSalary' => '5000',
+            'taxes' => '1000',
+            'generatedOn' => date('Y-m-d'),
+        ];
+
+
+        $html = view('PDF.salarySlip', $data)->render();
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        $dompdf->render();
+        $dompdf->stream('salary_slip.pdf', ['Attachment' => false]);
+
+
+
 
         return $data . "ProcessMonthlySalary" .  ' GroossSalary :- ' . $grossSalary . '<br/> ' . 'DeductionSalary' . $deductionSalary . '<br/>' . 'NetSalary' . $netSalary;
         // Return the calculated values
@@ -278,7 +327,7 @@ class ProcessMonthlySalaryController extends Controller
     }
     public function getSalaryStructure($empId)
     {
-        $salaryStructure = EmployeeSalaryStructure::where('empId', $empId)->first();
+        $salaryStructure =  EmployeeSalaryStructure::where('empId', $empId)->first();
 
         if ($salaryStructure) {
             foreach ($salaryStructure->getAttributes() as $key => $value) {
@@ -289,9 +338,9 @@ class ProcessMonthlySalaryController extends Controller
         }
         return $salaryStructure;
     }
-    public function getLeaveAttendaceClosing($empId, $monthId)
+    public function getLeaveAttendaceClosing($empId, $sMonthId)
     {
-        $leaveClosing = LeaveAttendanceClosing::where('sMonthId', $sMonthId)
+        $leaveClosing =  LeaveAttendanceClosing::where('sMonthId', $sMonthId)
             ->where('empId', $empId)
             ->first();
 
@@ -304,7 +353,7 @@ class ProcessMonthlySalaryController extends Controller
         }
         return $leaveClosing;
     }
-    public function getLeaveAttendance($empId, $monthId)
+    public function getLeaveAttendance($empId, $sMonthId)
     {
         $leaveAttendance = LeaveAttendance::where('sMonthId', $sMonthId)
             ->where('empId', $empId)
