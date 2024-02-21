@@ -294,25 +294,27 @@ class ProcessMonthlySalaryController extends Controller
         echo "<br/>" . $this->getLeaveAttendaceClosing(1, 1);
         echo "<br/>" . $this->getLeaveAttendance(1, 1);
 
-        exit;
-        $data = [
-            'employeeName' => 'John Doe',
-            'employeeId' => '123',
-            'basicSalary' => '5000',
-            'taxes' => '1000',
-            'generatedOn' => date('Y-m-d'),
-        ];
+        // exit;
+    //     $data = [
+    //         'employeeName' => 'John Doe',
+    //         'employeeId' => '123',
+    //         'basicSalary' => '5000',
+    //         'taxes' => '1000',
+    //         'generatedOn' => date('Y-m-d'),
+    //     ];
+    
+    //     $html = view('PDF.salarySlip', $data)->render();
+    
+    //     $dompdf = new Dompdf();
+    //     $dompdf->loadHtml($html);
+    //     $dompdf->setPaper('A4', 'portrait');
+    
+    //     $dompdf->render();
+    
+    //     $dompdf->stream('salary_slip.pdf', ['Attachment' => false]);
 
-
-        $html = view('PDF.salarySlip', $data)->render();
-
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-
-        $dompdf->render();
-        $dompdf->stream('salary_slip.pdf', ['Attachment' => false]);
-
+    // //     return response($dompdf->output(), 200)
+    // // ->header('Content-Type', 'application/pdf');
 
 
 
